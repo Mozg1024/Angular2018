@@ -1,7 +1,13 @@
 import { Guid } from 'guid-typescript';
 
-export interface UserModel {
-  id: Guid;
-  firstName: string;
-  lastName: string;
+export class UserModel {
+  public id: Guid;
+  public firstName: string;
+  public lastName: string;
+
+  constructor(firstName, lastName) {
+    this.id = Guid.create();
+    this.firstName = firstName;
+    this.lastName = lastName;
+  }
 }

@@ -1,4 +1,23 @@
-<p>
+<div class="container">
   <app-breadcrumbs></app-breadcrumbs>
-  courses-page works!
-</p>
+  <div class="row d-flex justify-content-between">
+    <div class="col-8">
+      <div class="row">
+        <div class="col-10">
+          <input type="search"
+                 class="form-control"
+                 placeholder="Text to search"
+                 [(ngModel)]="textToSearch">
+        </div>
+        <div class="col-auto">
+          <button type="submit"
+                  class="btn btn-primary mb-2"
+                  (click)="search()">Find</button>
+        </div>
+      </div>
+    </div>
+    <div class="col-auto">
+      <button class="btn btn-light">Add Course</button>
+    </div>
+  </div>
+</div>

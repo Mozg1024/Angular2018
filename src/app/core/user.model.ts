@@ -5,7 +5,7 @@ export class UserModel {
   public firstName: string;
   public lastName: string;
 
-  constructor(firstName, lastName) {
+  constructor({ firstName, lastName }) {
     this.id = Guid.create();
     this.firstName = firstName;
     this.lastName = lastName;

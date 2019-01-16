@@ -8,7 +8,7 @@ import { UserModel } from '../user.model';
 })
 export class HeaderComponent implements OnInit {
 
-  public user = new UserModel('Alex', 'P');
+  public user = new UserModel({ firstName: 'Alex', lastName: 'P' });
   constructor() { }
 
   ngOnInit() {

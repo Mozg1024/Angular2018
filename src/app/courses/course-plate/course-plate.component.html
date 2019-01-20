@@ -1,53 +1,28 @@
-<!--<div class="row d-flex justify-content-between p-2">-->
+<div class="card mb-2">
+  <div class="card-body">
+    <div class="row">
+      <div class="col-2">
+        {{course.creationDate | date : 'MM.dd.yyyy'}}
+      </div>
 
-  <div class="card mb-2">
-    <div class="card-body">
-      <div class="row">
-        <div class="col-2">
-          {{course.creationDate | date : 'MM.dd.yyyy'}}
-        </div>
+      <div class="col-2">
+        {{course.title | uppercase}}
+      </div>
 
-        <div class="col-2">
-          {{course.title | uppercase}}
-        </div>
+      <div class="col-5">
+        <div *ngFor="let descriptionString of course.description">{{descriptionString}}</div>
+      </div>
 
-        <div class="col-5">
-          <div *ngFor="let descriptionString of course.description">{{descriptionString}}</div>
-        </div>
+      <div class="col-1">
+        {{course.duration}}
+      </div>
 
-        <div class="col-1">
-          {{course.duration}}
-        </div>
-
-        <div class="col-2">
-          <div class="btn-group-vertical">
-            <button class="btn btn-info">Edit Course</button>
-            <button class="btn btn-warning" (click)="deleteCourse()">Delete Course</button>
-          </div>
+      <div class="col-2">
+        <div class="btn-group-vertical">
+          <button class="btn btn-info">Edit Course</button>
+          <button class="btn btn-warning" (click)="deleteCourse()">Delete Course</button>
         </div>
       </div>
     </div>
   </div>
-
-  <!--<div class="col-10">
-    <div class="row">
-      <div class="col-10">
-        <span>{{course.title | uppercase}}</span>
-      </div>
-      <div class="col-auto">
-        <div>{{course.duration}}</div>
-        <div>{{course.creationDate | date : 'MM.dd.yyyy'}}</div>
-      </div>
-    </div>
-    <div class="row">
-      <div *ngFor="let descriptionString of course.description">{{descriptionString}}</div>
-    </div>
-  </div>-->
-
-  <!--<div class="col-auto">
-    <div class="btn-group-vertical">
-      <button class="btn btn-info">Edit Course</button>
-      <button class="btn btn-warning">Delete Course</button>
-    </div>
-  </div>-->
-<!--</div>-->
+</div>

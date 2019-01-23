@@ -26,7 +26,7 @@ export class CoursesPageComponent implements OnInit {
   constructor() { }
 
   ngOnInit() {
-    for (let i = 1; i < 10; i++) {
+    for (let i = 1; i <= 10; i++) {
       this.courses.push(new CourseModel({
         title: `Course ${i} title`,
         creationDate: new Date(Math.random() * 5000000000000),

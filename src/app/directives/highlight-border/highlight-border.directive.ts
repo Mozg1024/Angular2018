@@ -13,7 +13,7 @@ export class HighlightBorderDirective implements OnInit {
   ngOnInit() {
     const days = differenceInDays(Date.now(), this.creationDate);
 
-    if (days < 0) {
+    if (days <= 0) {
       this.renderer.setStyle(this.element.nativeElement, 'box-shadow', '0 0 10px blue');
     } else if (days <= 14) {
       this.renderer.setStyle(this.element.nativeElement, 'box-shadow', '0 0 10px green');

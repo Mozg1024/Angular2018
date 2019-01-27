@@ -7,6 +7,7 @@ import { CoursePlateComponent } from './course-plate/course-plate.component';
 import { HighlightBorderDirective } from '../directives/highlight-border/highlight-border.directive';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { FormatDurationPipe } from '../pipes/formatDuration/format-duration.pipe';
+import { OrderByDatePipe } from '../pipes/orderByDate/order-by-date.pipe';
 
 @NgModule({
   declarations: [
@@ -14,6 +15,7 @@ import { FormatDurationPipe } from '../pipes/formatDuration/format-duration.pipe
     BreadcrumbsComponent,
     HighlightBorderDirective,
     FormatDurationPipe,
+    OrderByDatePipe,
     CoursePlateComponent
   ],
   imports: [

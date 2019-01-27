@@ -10,9 +10,8 @@ export class FormatDurationPipe implements PipeTransform {
     const hours = Math.floor(value / 60);
     const onlyMinutes = hours === 0;
     const minutesLeadingZero = (minutes < 10) && !onlyMinutes;
-    const formattedDuration = (onlyMinutes ? '' : `${hours}h `) +
-                              (minutesLeadingZero ? '0' : '') + `${minutes}min`;
-    return formattedDuration;
+    return (onlyMinutes ? '' : `${hours}h `) +
+           (minutesLeadingZero ? '0' : '') + `${minutes}min`;
   }
 
 }

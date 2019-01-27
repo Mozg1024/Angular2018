@@ -32,7 +32,8 @@ export class CoursesPageComponent implements OnInit {
         title: `Course ${i} title`,
         creationDate: addDays(Date.now(), Math.floor(Math.random() * 40) - 20),
         duration: i * 1000,
-        description: [`Course ${i} description`]
+        description: [`Course ${i} description`],
+        topRated: !!Math.round(Math.random())
       }));
     }
   }

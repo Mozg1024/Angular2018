@@ -9,6 +9,8 @@
 
       <div class="col-2">
         {{course.title | uppercase}}
+        <fa-icon [icon]="faStar"
+                 [ngClass]="{ 'top-rated': course.topRated }"></fa-icon>
       </div>
 
       <div class="col-5">

@@ -5,6 +5,7 @@ import { CoursesPageComponent } from './courses-page/courses-page.component';
 import { BreadcrumbsComponent } from './breadcrumbs/breadcrumbs.component';
 import { CoursePlateComponent } from './course-plate/course-plate.component';
 import { HighlightBorderDirective } from '../directives/highlight-border/highlight-border.directive';
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 
 @NgModule({
   declarations: [
@@ -15,6 +16,7 @@ import { HighlightBorderDirective } from '../directives/highlight-border/highlig
   ],
   imports: [
     CommonModule,
+    FontAwesomeModule,
     FormsModule
   ],
   exports: [

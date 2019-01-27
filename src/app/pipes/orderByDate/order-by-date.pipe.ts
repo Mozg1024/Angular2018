@@ -2,7 +2,8 @@ import { Pipe, PipeTransform } from '@angular/core';
 import { compareAsc } from 'date-fns';
 
 @Pipe({
-  name: 'orderByDate'
+  name: 'orderByDate',
+  pure: false
 })
 export class OrderByDatePipe implements PipeTransform {
 

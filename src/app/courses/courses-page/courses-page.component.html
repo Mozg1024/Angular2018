@@ -23,7 +23,7 @@
     </div>
   </div>
   <app-course-plate
-    *ngFor="let course of courses | orderByDate"
+    *ngFor="let course of filteredCourses | orderByDate"
     [course]="course"
     (delete)="onCourseDelete($event)">
   </app-course-plate>

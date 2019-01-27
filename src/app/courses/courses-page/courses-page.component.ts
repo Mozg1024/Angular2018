@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { CourseModel } from '../course.model';
 import { addDays } from 'date-fns';
+import { FilterPipe } from '../../pipes/filter/filter.pipe';
 
 @Component({
   selector: 'app-courses-page',
@@ -10,10 +11,12 @@ import { addDays } from 'date-fns';
 export class CoursesPageComponent implements OnInit {
 
   textToSearch = '';
+  filterPipe = new FilterPipe();
   public courses: CourseModel[] = [];
+  public filteredCourses: CourseModel[] = [];
 
   search() {
-    console.log(this.textToSearch);
+    this.filteredCourses = this.filterPipe.transform(this.courses, this.textToSearch);
   }
 
   loadMore() {
@@ -22,6 +25,7 @@ export class CoursesPageComponent implements OnInit {
 
   onCourseDelete(courseId) {
     this.courses = this.courses.filter(course => !course.id.equals(courseId));
+    this.filteredCourses = [...this.courses];
   }
 
   constructor() { }
@@ -36,6 +40,7 @@ export class CoursesPageComponent implements OnInit {
         topRated: !!Math.round(Math.random())
       }));
     }
+    this.filteredCourses = [...this.courses];
   }
 
 }

@@ -4,9 +4,9 @@ export class CourseModel {
   public id: Guid;
   public title: string;
   public creationDate: Date;
-  public duration: number;
+  public duration: number; // in seconds
   public description: string[];
-  topRated: boolean;
+  public topRated: boolean;
 
   constructor({ title, creationDate, duration, description, topRated }) {
     this.id = Guid.create();

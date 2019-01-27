@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { CourseModel } from '../course.model';
+import { addDays } from 'date-fns';
 
 @Component({
   selector: 'app-courses-page',
@@ -29,7 +30,7 @@ export class CoursesPageComponent implements OnInit {
     for (let i = 1; i <= 10; i++) {
       this.courses.push(new CourseModel({
         title: `Course ${i} title`,
-        creationDate: new Date(Math.random() * 5000000000000),
+        creationDate: addDays(Date.now(), Math.floor(Math.random() * 40) - 20),
         duration: i * 1000,
         description: [`Course ${i} description`]
       }));

@@ -14,9 +14,9 @@ export class HighlightBorderDirective implements OnInit {
     const days = differenceInDays(Date.now(), this.creationDate);
 
     if (days < 0) {
-      this.renderer.setStyle(this.element.nativeElement, 'border-color', 'blue');
+      this.renderer.setStyle(this.element.nativeElement, 'box-shadow', '0 0 10px blue');
     } else if (days <= 14) {
-      this.renderer.setStyle(this.element.nativeElement, 'border-color', 'green');
+      this.renderer.setStyle(this.element.nativeElement, 'box-shadow', '0 0 10px green');
     }
   }
 

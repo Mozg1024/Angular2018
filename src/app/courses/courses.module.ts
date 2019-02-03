@@ -9,6 +9,7 @@ import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { FormatDurationPipe } from '../pipes/formatDuration/format-duration.pipe';
 import { OrderByDatePipe } from '../pipes/orderByDate/order-by-date.pipe';
 import { CoursesService } from '../services/courses/courses.service';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
 @NgModule({
   declarations: [
@@ -22,6 +23,7 @@ import { CoursesService } from '../services/courses/courses.service';
   imports: [
     CommonModule,
     FontAwesomeModule,
+    NgbModule,
     FormsModule
   ],
   providers: [

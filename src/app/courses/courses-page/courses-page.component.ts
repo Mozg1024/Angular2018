@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { CourseModel } from '../course.model';
-import { addDays } from 'date-fns';
 import { FilterPipe } from '../../pipes/filter/filter.pipe';
+import { CoursesService } from '../../services/courses/courses.service';
 
 @Component({
   selector: 'app-courses-page',
@@ -24,22 +24,15 @@ export class CoursesPageComponent implements OnInit {
   }
 
   onCourseDelete(courseId) {
-    this.courses = this.courses.filter(course => !course.id.equals(courseId));
+    this.courseService.delete(courseId);
+    this.courses = this.courseService.getAll();
     this.filteredCourses = [...this.courses];
   }
 
-  constructor() { }
+  constructor(private courseService: CoursesService) { }
 
   ngOnInit() {
-    for (let i = 1; i <= 10; i++) {
-      this.courses.push(new CourseModel({
-        title: `Course ${i} title`,
-        creationDate: addDays(Date.now(), Math.floor(Math.random() * 40) - 20),
-        duration: Math.floor(Math.random() * 1000),
-        description: [`Course ${i} description`],
-        topRated: !!Math.round(Math.random())
-      }));
-    }
+    this.courses = this.courseService.getAll();
     this.filteredCourses = [...this.courses];
   }
 

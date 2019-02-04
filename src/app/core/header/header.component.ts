@@ -14,8 +14,6 @@ export class HeaderComponent implements OnInit {
   constructor(private authService: AuthorizationService) { }
 
   ngOnInit() {
-    const user = new UserModel({ firstName: 'Alex', lastName: 'P' });
-    this.authService.login(user, this.token);
   }
 
   isAuthenticated() {
@@ -23,8 +21,10 @@ export class HeaderComponent implements OnInit {
   }
 
   getUserInfo() {
-    return this.isAuthenticated()
-      ? this.authService.getUserInfo(this.token).firstName + ' ' + this.authService.getUserInfo(this.token).lastName
+    const userInfo = this.authService.getUserInfo(this.token);
+
+    return (userInfo instanceof UserModel)
+      ? userInfo.firstName + ' ' + userInfo.lastName
       : '';
   }
 

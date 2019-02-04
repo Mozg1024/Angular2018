@@ -3,10 +3,11 @@
 
   <ul class="nav justify-content-end">
     <li class="nav-item">
-      <p class="nav-link">{{user.firstName}} {{user.lastName}}</p>
+      <p class="nav-link">{{getUserInfo()}}</p>
     </li>
     <li class="nav-item">
-      <button class="nav-link btn btn-light">Logout</button>
+      <button class="nav-link btn btn-light"
+              (click)="logout()">{{isAuthenticated() ? 'Logout' : 'Login'}}</button>
     </li>
   </ul>
 </header>

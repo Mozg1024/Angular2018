@@ -1,4 +1,4 @@
-import {Component, OnInit, ViewChild} from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { CourseModel } from '../course.model';
 import { FilterPipe } from '../../pipes/filter/filter.pipe';
 import { CoursesService } from '../../services/courses/courses.service';

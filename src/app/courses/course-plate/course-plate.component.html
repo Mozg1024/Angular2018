@@ -1,12 +1,16 @@
-<div class="card mb-2">
+<div class="card mb-2"
+     appHighlightBorder
+     [creationDate]="course.creationDate">
   <div class="card-body">
     <div class="row">
       <div class="col-2">
-        {{course.creationDate | date : 'MM.dd.yyyy'}}
+        {{course.creationDate | date : 'dd.MM.yyyy'}}
       </div>
 
       <div class="col-2">
         {{course.title | uppercase}}
+        <fa-icon [icon]="faStar"
+                 [ngClass]="{ 'top-rated': course.topRated }"></fa-icon>
       </div>
 
       <div class="col-5">
@@ -14,7 +18,7 @@
       </div>
 
       <div class="col-1">
-        {{course.duration}}
+        {{course.duration | formatDuration}}
       </div>
 
       <div class="col-2">

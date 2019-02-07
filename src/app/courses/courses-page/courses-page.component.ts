@@ -1,5 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { CourseModel } from '../course.model';
+import { FilterPipe } from '../../pipes/filter/filter.pipe';
+import { CoursesService } from '../../services/courses/courses.service';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
   selector: 'app-courses-page',
@@ -9,10 +12,13 @@ import { CourseModel } from '../course.model';
 export class CoursesPageComponent implements OnInit {
 
   textToSearch = '';
+  filterPipe = new FilterPipe();
   public courses: CourseModel[] = [];
+  public filteredCourses: CourseModel[] = [];
+  @ViewChild('modalView') private modalView;
 
   search() {
-    console.log(this.textToSearch);
+    this.filteredCourses = this.filterPipe.transform(this.courses, this.textToSearch);
   }
 
   loadMore() {
@@ -20,20 +26,24 @@ export class CoursesPageComponent implements OnInit {
   }
 
   onCourseDelete(courseId) {
-    this.courses = this.courses.filter(course => !course.id.equals(courseId));
+    this.modalService
+      .open(this.modalView)
+      .result
+      .then(() => {
+        this.courseService.delete(courseId);
+        this.courses = this.courseService.getAll();
+        this.filteredCourses = [...this.courses];
+      }, () => {});
   }
 
-  constructor() { }
+  constructor(
+    private courseService: CoursesService,
+    private modalService: NgbModal
+  ) { }
 
   ngOnInit() {
-    for (let i = 1; i <= 10; i++) {
-      this.courses.push(new CourseModel({
-        title: `Course ${i} title`,
-        creationDate: new Date(Math.random() * 5000000000000),
-        duration: i * 1000,
-        description: [`Course ${i} description`]
-      }));
-    }
+    this.courses = this.courseService.getAll();
+    this.filteredCourses = [...this.courses];
   }
 
 }

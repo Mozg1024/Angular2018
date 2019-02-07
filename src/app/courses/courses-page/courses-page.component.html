@@ -23,10 +23,17 @@
     </div>
   </div>
   <app-course-plate
-    *ngFor="let course of courses"
+    *ngFor="let course of filteredCourses | orderByDate"
     [course]="course"
     (delete)="onCourseDelete($event)">
   </app-course-plate>
+
+  <div class="card mb-2"
+       *ngIf="courses.length === 0">
+    <div class="card-body">
+      NO DATA. FEEL FREE TO ADD NEW COURSE.
+    </div>
+  </div>
 
   <div class="row d-flex justify-content-center">
     <button
@@ -36,3 +43,19 @@
     </button>
   </div>
 </div>
+
+<ng-template #modalView let-modal>
+  <div class="modal-header">
+    <h4 class="modal-title" id="modal-basic-title">Confirmation</h4>
+    <button type="button" class="close" aria-label="Close" (click)="modal.dismiss()">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    Do you really want to delete this course?
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-outline-dark" (click)="modal.close()">Yes</button>
+    <button type="button" class="btn btn-outline-dark" (click)="modal.dismiss()">No</button>
+  </div>
+</ng-template>

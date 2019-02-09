@@ -3,6 +3,7 @@ import { CourseModel } from '../course.model';
 import { FilterPipe } from '../../pipes/filter/filter.pipe';
 import { CoursesService } from '../../services/courses/courses.service';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-courses-page',
@@ -25,6 +26,10 @@ export class CoursesPageComponent implements OnInit {
     console.log('Start to load more…');
   }
 
+  addCourse() {
+    this.router.navigate(['/new_course']);
+  }
+
   onCourseDelete(courseId) {
     this.modalService
       .open(this.modalView)
@@ -38,6 +43,7 @@ export class CoursesPageComponent implements OnInit {
 
   constructor(
     private courseService: CoursesService,
+    private router: Router,
     private modalService: NgbModal
   ) { }
 

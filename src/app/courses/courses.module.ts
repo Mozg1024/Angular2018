@@ -11,6 +11,7 @@ import { OrderByDatePipe } from '../pipes/orderByDate/order-by-date.pipe';
 import { CoursesService } from '../services/courses/courses.service';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { FilterPipe } from '../pipes/filter/filter.pipe';
+import { CoursePageComponent } from './course-page/course-page.component';
 
 @NgModule({
   declarations: [
@@ -20,6 +21,7 @@ import { FilterPipe } from '../pipes/filter/filter.pipe';
     FilterPipe,
     FormatDurationPipe,
     OrderByDatePipe,
+    CoursePageComponent,
     CoursePlateComponent
   ],
   imports: [

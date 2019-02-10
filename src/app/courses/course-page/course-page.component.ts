@@ -11,6 +11,10 @@ export class CoursePageComponent implements OnInit {
 
   faCalendar = faCalendar;
   duration = 0;
+  title = '';
+  description = '';
+  date = new Date();
+  authors = '';
 
   constructor(
     private router: Router

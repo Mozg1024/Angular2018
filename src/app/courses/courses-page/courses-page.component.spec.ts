@@ -54,6 +54,7 @@ describe('CoursesPageComponent', () => {
           title: 'title',
           creationDate: new Date('01/01/2019'),
           duration: 1000,
+          topRated: true,
           description: ['description']
         }));
       }

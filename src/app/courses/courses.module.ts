@@ -12,6 +12,7 @@ import { CoursesService } from '../services/courses/courses.service';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { FilterPipe } from '../pipes/filter/filter.pipe';
 import { CoursePageComponent } from './course-page/course-page.component';
+import { RouterModule } from '@angular/router';
 
 @NgModule({
   declarations: [
@@ -28,6 +29,7 @@ import { CoursePageComponent } from './course-page/course-page.component';
     CommonModule,
     FontAwesomeModule,
     NgbModule,
+    RouterModule,
     FormsModule
   ],
   providers: [

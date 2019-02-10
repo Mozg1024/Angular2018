@@ -2,6 +2,7 @@ import { Component, OnInit, Input, Output, EventEmitter, ChangeDetectionStrategy
 import { CourseModel } from '../course.model';
 import { Guid } from 'guid-typescript';
 import { faStar } from '@fortawesome/free-solid-svg-icons';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-course-plate',
@@ -20,7 +21,11 @@ export class CoursePlateComponent implements OnInit {
     this.delete.emit(this.course.id);
   }
 
-  constructor() {
+  editCourse() {
+    this.router.navigate([`/courses/${this.course.id}`]);
+  }
+
+  constructor(private router: Router) {
   }
 
   ngOnInit() {

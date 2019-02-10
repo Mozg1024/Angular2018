@@ -5,9 +5,9 @@ import { LoginPageComponent } from './core/login-page/login-page.component';
 import { CoursePageComponent } from './courses/course-page/course-page.component';
 
 const routes: Routes = [
-  { path: '', redirectTo: 'login', pathMatch: 'full' },
+  { path: '', redirectTo: 'courses', pathMatch: 'full' },
   { path: 'courses', component: CoursesPageComponent },
-  { path: 'new_course', component: CoursePageComponent },
+  { path: 'courses/:id', component: CoursePageComponent },
   { path: 'login', component: LoginPageComponent }
 ];
 

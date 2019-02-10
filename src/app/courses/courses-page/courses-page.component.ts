@@ -27,7 +27,7 @@ export class CoursesPageComponent implements OnInit {
   }
 
   addCourse() {
-    this.router.navigate(['/new_course']);
+    this.router.navigate(['/courses/new']);
   }
 
   onCourseDelete(courseId) {

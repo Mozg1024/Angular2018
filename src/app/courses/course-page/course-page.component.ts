@@ -3,6 +3,7 @@ import { faCalendar } from '@fortawesome/free-solid-svg-icons';
 import { ActivatedRoute, Router } from '@angular/router';
 import { CourseModel } from '../course.model';
 import { CoursesService } from '../../services/courses/courses.service';
+import { BreadCrumb } from '../breadcrumbs/breadcrumbs.component';
 
 @Component({
   selector: 'app-course-page',
@@ -22,6 +23,10 @@ export class CoursePageComponent implements OnInit {
     day: 1
   };
   authors = '';
+  breadCrumbs: BreadCrumb[] = [{
+    link: null,
+    title: 'Courses'
+  }];
   isNewCourse = false;
 
   constructor(
@@ -71,6 +76,17 @@ export class CoursePageComponent implements OnInit {
         day: this.course.creationDate.getDate(),
       };
       this.duration = this.course.duration;
+
+      this.breadCrumbs = [
+        {
+          link: '/courses',
+          title: 'Courses'
+        },
+        {
+          link: null,
+          title: this.course.title
+        }
+      ];
     });
   }
 

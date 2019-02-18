@@ -9,7 +9,7 @@ export class CourseModel {
   public topRated: boolean;
 
   constructor({
-                title = '',
+                title = 'New Course',
                 creationDate = new Date(),
                 duration = 0,
                 description = [],

@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { UserModel } from '../user.model';
 import { AuthorizationService } from '../../services/authorization/authorization.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-header',
@@ -11,7 +12,10 @@ export class HeaderComponent implements OnInit {
 
   private token = 'user_token';
 
-  constructor(private authService: AuthorizationService) { }
+  constructor(
+    private authService: AuthorizationService,
+    private router: Router
+  ) { }
 
   ngOnInit() {
   }
@@ -26,6 +30,11 @@ export class HeaderComponent implements OnInit {
     return (userInfo instanceof UserModel)
       ? userInfo.firstName + ' ' + userInfo.lastName
       : '';
+  }
+
+  login() {
+    this.router.navigate(['/login']);
+    console.log('Redirect to login page.');
   }
 
   logout() {

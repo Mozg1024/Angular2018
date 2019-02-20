@@ -8,7 +8,6 @@ import { HighlightBorderDirective } from '../directives/highlight-border/highlig
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { FormatDurationPipe } from '../pipes/formatDuration/format-duration.pipe';
 import { OrderByDatePipe } from '../pipes/orderByDate/order-by-date.pipe';
-import { CoursesService } from '../services/courses/courses.service';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { FilterPipe } from '../pipes/filter/filter.pipe';
 import { CoursePageComponent } from './course-page/course-page.component';
@@ -32,9 +31,7 @@ import { RouterModule } from '@angular/router';
     RouterModule,
     FormsModule
   ],
-  providers: [
-    CoursesService
-  ],
+  providers: [],
   exports: [
     CoursesPageComponent
   ]

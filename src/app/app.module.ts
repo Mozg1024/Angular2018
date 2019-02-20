@@ -5,6 +5,16 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { CoreModule } from './core/core.module';
 import { CoursesModule } from './courses/courses.module';
+import { AuthorizationGuard } from './guards/authorization/authorization.guard';
+import { AuthorizationService } from './services/authorization/authorization.service';
+import { CoursesService } from './services/courses/courses.service';
+
+// Application wide providers
+const APP_PROVIDERS = [
+  AuthorizationService,
+  AuthorizationGuard,
+  CoursesService
+];
 
 @NgModule({
   declarations: [
@@ -16,7 +26,7 @@ import { CoursesModule } from './courses/courses.module';
     CoreModule,
     CoursesModule
   ],
-  providers: [],
+  providers: APP_PROVIDERS,
   bootstrap: [AppComponent]
 })
 export class AppModule { }

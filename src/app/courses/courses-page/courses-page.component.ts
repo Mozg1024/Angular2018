@@ -4,6 +4,7 @@ import { FilterPipe } from '../../pipes/filter/filter.pipe';
 import { CoursesService } from '../../services/courses/courses.service';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { Router } from '@angular/router';
+import { BreadCrumb } from '../breadcrumbs/breadcrumbs.component';
 
 @Component({
   selector: 'app-courses-page',
@@ -16,6 +17,10 @@ export class CoursesPageComponent implements OnInit {
   filterPipe = new FilterPipe();
   public courses: CourseModel[] = [];
   public filteredCourses: CourseModel[] = [];
+  breadCrumbs: BreadCrumb[] = [{
+    link: null,
+    title: 'Courses'
+  }];
   @ViewChild('modalView') private modalView;
 
   search() {
@@ -27,7 +32,7 @@ export class CoursesPageComponent implements OnInit {
   }
 
   addCourse() {
-    this.router.navigate(['/new_course']);
+    this.router.navigate(['/courses/new']);
   }
 
   onCourseDelete(courseId) {

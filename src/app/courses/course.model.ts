@@ -8,7 +8,13 @@ export class CourseModel {
   public description: string[];
   public topRated: boolean;
 
-  constructor({ title, creationDate, duration, description, topRated }) {
+  constructor({
+                title = 'New Course',
+                creationDate = new Date(),
+                duration = 0,
+                description = [],
+                topRated = false
+  }) {
     this.id = Guid.create();
     this.title = title;
     this.creationDate = creationDate;

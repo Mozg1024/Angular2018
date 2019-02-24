@@ -1,5 +1,9 @@
 <nav aria-label="breadcrumb">
   <ol class="breadcrumb">
-    <li class="breadcrumb-item active">Courses</li>
+    <li class="breadcrumb-item active"
+        *ngFor="let path of paths">
+      <a *ngIf="path.link" routerLink="{{path.link}}">{{path.title}}</a>
+      <span *ngIf="!path.link">{{path.title}}</span>
+    </li>
   </ol>
 </nav>

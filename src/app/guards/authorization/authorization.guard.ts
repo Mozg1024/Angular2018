@@ -8,13 +8,11 @@ import { AuthorizationService } from '../../services/authorization/authorization
 })
 export class AuthorizationGuard implements CanActivate {
 
-  private token = 'user_token';
-
   constructor(
     private authService: AuthorizationService
   ) {}
 
   canActivate(): Observable<boolean> | Promise<boolean> | boolean {
-    return this.authService.isAuthenticated(this.token);
+    return this.authService.isAuthenticated();
   }
 }

@@ -8,6 +8,7 @@ import { CoursesModule } from './courses/courses.module';
 import { AuthorizationGuard } from './guards/authorization/authorization.guard';
 import { AuthorizationService } from './services/authorization/authorization.service';
 import { CoursesService } from './services/courses/courses.service';
+import { HttpClientModule } from '@angular/common/http';
 
 // Application wide providers
 const APP_PROVIDERS = [
@@ -24,6 +25,7 @@ const APP_PROVIDERS = [
     BrowserModule,
     AppRoutingModule,
     CoreModule,
+    HttpClientModule,
     CoursesModule
   ],
   providers: APP_PROVIDERS,

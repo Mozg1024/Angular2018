@@ -1,10 +1,19 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { CourseModel } from '../course.model';
-import { FilterPipe } from '../../pipes/filter/filter.pipe';
 import { CoursesService } from '../../services/courses/courses.service';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { Router } from '@angular/router';
 import { BreadCrumb } from '../breadcrumbs/breadcrumbs.component';
+import * as _ from 'lodash';
+
+const COURSES_PER_PAGE = 5;
+
+class Page {
+  public index = 0;
+  constructor (index) {
+    this.index = index;
+  }
+}
 
 @Component({
   selector: 'app-courses-page',
@@ -14,21 +23,32 @@ import { BreadCrumb } from '../breadcrumbs/breadcrumbs.component';
 export class CoursesPageComponent implements OnInit {
 
   textToSearch = '';
-  filterPipe = new FilterPipe();
+  public currentPageIndex = 1;
+  public totalCount = 0;
   public courses: CourseModel[] = [];
-  public filteredCourses: CourseModel[] = [];
   breadCrumbs: BreadCrumb[] = [{
     link: null,
     title: 'Courses'
   }];
   @ViewChild('modalView') private modalView;
 
-  search() {
-    this.filteredCourses = this.filterPipe.transform(this.courses, this.textToSearch);
+  public get pages() {
+    const pagesCount = Math.ceil(this.totalCount / COURSES_PER_PAGE);
+    return _.times(pagesCount, index => new Page(index + 1));
   }
 
-  loadMore() {
-    console.log('Start to load more…');
+  search() {
+    this.goTo(new Page(1));
+  }
+
+  goTo(page: Page) {
+    const start = COURSES_PER_PAGE * (page.index - 1);
+    this.courseService.getAll(start, COURSES_PER_PAGE, this.textToSearch).subscribe(result => {
+      const { courses, totalCount } = result;
+      this.courses = courses;
+      this.totalCount = totalCount;
+      this.currentPageIndex = page.index;
+    });
   }
 
   addCourse() {
@@ -40,9 +60,11 @@ export class CoursesPageComponent implements OnInit {
       .open(this.modalView)
       .result
       .then(() => {
-        this.courseService.delete(courseId);
-        this.courses = this.courseService.getAll();
-        this.filteredCourses = [...this.courses];
+        this.courseService.delete(courseId).finally(
+          () => {
+            this.goTo(new Page(1));
+          }
+        );
       }, () => {});
   }
 
@@ -53,8 +75,7 @@ export class CoursesPageComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    this.courses = this.courseService.getAll();
-    this.filteredCourses = [...this.courses];
+    this.goTo(new Page(1));
   }
 
 }

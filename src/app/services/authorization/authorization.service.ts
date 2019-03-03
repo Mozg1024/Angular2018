@@ -3,10 +3,11 @@ import { UserModel } from '../../core/user.model';
 import { Router } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
 
+const LOGIN_PATH = 'http://localhost:3004/auth/login';
+const USER_INFO_PATH = 'http://localhost:3004/auth/userinfo';
+
 @Injectable()
 export class AuthorizationService {
-  private LOGIN_PATH = 'http://localhost:3004/auth/login';
-  private USER_INFO_PATH = 'http://localhost:3004/auth/userinfo';
   private storage = new Map();
   private token: string;
 
@@ -16,17 +17,16 @@ export class AuthorizationService {
   ) { }
 
   public login(login: string, password: string) {
-    return this.http.post(`${this.LOGIN_PATH}`, {
+    return this.http.post(`${LOGIN_PATH}`, {
       login,
       password
-    }).subscribe((res) => {
-      this.token = (res as any).token;
-      this.http.post(`${this.USER_INFO_PATH}`, null, {
+    }).subscribe((res: any) => {
+      this.token = res.token;
+      this.http.post(`${USER_INFO_PATH}`, null, {
         headers: {
           'Authorization': this.token
         }
-      }).subscribe((res) => {
-        const userInfo: any = res;
+      }).subscribe((userInfo: any) => {
         const user = new UserModel({
           firstName: userInfo.firstName,
           lastName: userInfo.lastName

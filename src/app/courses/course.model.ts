@@ -9,15 +9,16 @@ export class CourseModel {
   public topRated: boolean;
 
   constructor({
+                id = '',
                 title = 'New Course',
                 creationDate = new Date(),
                 duration = 0,
                 description = [],
                 topRated = false
   }) {
-    this.id = Guid.create();
+    this.id = id ? Guid.parse(id) : Guid.create();
     this.title = title;
-    this.creationDate = creationDate;
+    this.creationDate = new Date(creationDate);
     this.duration = duration;
     this.description = description;
     this.topRated = topRated;

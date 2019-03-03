@@ -12,18 +12,20 @@ module.exports = (server) => {
 			sort = query.sort,
 			queryStr = query.query,
 			courses = server.db.getState().courses;
-		
+
 			if (!!query.textFragment) {
-				courses = courses.filter((course) => course.name.concat(course.description).toUpperCase().indexOf(query.textFragment.toUpperCase()) >= 0);
+				courses = courses.filter((course) => [course.title, ...course.description].join().toUpperCase().indexOf(query.textFragment.toUpperCase()) >= 0);
 			}
+
+    const totalCount = courses.length;
 
 		if (courses.length < to || !to) {
 			to = courses.length;
 		}
 		courses = courses.slice(from, to);
-		
-		res.json(courses);
+
+		res.json({ courses, totalCount });
 	});
-	
+
 	return router;
 };

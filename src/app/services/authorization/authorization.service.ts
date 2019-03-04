@@ -9,7 +9,11 @@ const USER_INFO_PATH = 'http://localhost:3004/auth/userinfo';
 @Injectable()
 export class AuthorizationService {
   private storage = new Map();
-  private token: string;
+  private _token = '';
+
+  public get token() {
+    return this._token;
+  }
 
   constructor(
     private router: Router,
@@ -21,12 +25,8 @@ export class AuthorizationService {
       login,
       password
     }).subscribe((res: any) => {
-      this.token = res.token;
-      this.http.post(`${USER_INFO_PATH}`, null, {
-        headers: {
-          'Authorization': this.token
-        }
-      }).subscribe((userInfo: any) => {
+      this._token = res.token;
+      this.http.post(`${USER_INFO_PATH}`, null).subscribe((userInfo: any) => {
         const user = new UserModel({
           firstName: userInfo.firstName,
           lastName: userInfo.lastName

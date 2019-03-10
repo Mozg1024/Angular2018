@@ -6,6 +6,7 @@ import { LoginPageComponent } from './login-page/login-page.component';
 import { FormsModule } from '@angular/forms';
 import { NoContentComponent } from './no-content/no-content.component';
 import { RouterModule } from '@angular/router';
+import { LoadingComponent } from './loading/loading.component';
 
 @NgModule({
   declarations: [
@@ -13,6 +14,7 @@ import { RouterModule } from '@angular/router';
     FooterComponent,
     LoginPageComponent,
     NoContentComponent,
+    LoadingComponent,
   ],
   imports: [
     CommonModule,
@@ -21,7 +23,8 @@ import { RouterModule } from '@angular/router';
   ],
   exports: [
     HeaderComponent,
-    FooterComponent
+    FooterComponent,
+    LoadingComponent,
   ],
   providers: []
 })

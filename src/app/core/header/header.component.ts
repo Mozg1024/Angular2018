@@ -9,7 +9,7 @@ import { Router } from '@angular/router';
 })
 export class HeaderComponent implements OnInit {
 
-  private isAuthenticated = false;
+  public isAuthenticated = false;
   public userFirstName;
   public userLastName;
 

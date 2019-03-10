@@ -3,6 +3,7 @@ import { UserModel } from '../../core/user.model';
 import { Router } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
 import { Observable, ReplaySubject } from 'rxjs';
+import { LoadingService } from '../loading/loading.service';
 
 const LOGIN_PATH = 'http://localhost:3004/auth/login';
 const USER_INFO_PATH = 'http://localhost:3004/auth/userinfo';
@@ -20,10 +21,12 @@ export class AuthorizationService {
 
   constructor(
     private router: Router,
+    private loadingService: LoadingService,
     private http: HttpClient
   ) { }
 
   public login(login: string, password: string) {
+    this.loadingService.show();
     return this.http.post(`${LOGIN_PATH}`, {
       login,
       password
@@ -38,19 +41,24 @@ export class AuthorizationService {
         this.onUserChanged(user);
         this.router.navigate(['/courses']);
         console.log(`User ${login} logged in successfully.`);
+        this.loadingService.hide();
       }, (error) => {
         console.log(error);
+        this.loadingService.hide();
       });
     }, (error) => {
       console.log(error);
+      this.loadingService.hide();
     });
   }
 
   public logout() {
+    this.loadingService.show();
     this.storage.delete(this.token);
     this.onUserChanged(null);
     this.router.navigate(['/login']);
     console.log('User is logged out.');
+    this.loadingService.hide();
   }
 
   public isAuthenticated(): Observable<any> {

@@ -4,6 +4,7 @@ import { HttpClient } from '@angular/common/http';
 import * as _ from 'lodash';
 import { map } from 'rxjs/operators';
 import { Observable } from 'rxjs';
+import { LoadingService } from '../loading/loading.service';
 
 const COURSES_PATH = 'http://localhost:3004/courses';
 
@@ -11,11 +12,13 @@ const COURSES_PATH = 'http://localhost:3004/courses';
 export class CoursesService {
 
   constructor(
-    private http: HttpClient
+    private http: HttpClient,
+    private loadingService: LoadingService
   ) {
   }
 
   getAll(start?: number, count?: number, textFragment?: string): Observable<{ courses: CourseModel[], totalCount: number }> {
+    this.loadingService.show();
     start = start || 0;
     count = count || 0;
     textFragment = textFragment || '';
@@ -28,6 +31,7 @@ export class CoursesService {
     }).pipe(
       map(result => {
         const { courses, totalCount } = result as any;
+        this.loadingService.hide();
         return {
           courses: _.map(courses, course => new CourseModel({ ...course })),
           totalCount
@@ -37,6 +41,7 @@ export class CoursesService {
   }
 
   add(course: CourseModel) {
+    this.loadingService.show();
     return this.http.post(`${COURSES_PATH}`, this.courseToDBRecord(course))
       .toPromise().then(
         () => {
@@ -45,17 +50,26 @@ export class CoursesService {
         error => {
           console.log(error);
         }
-      );
+      ).finally(() => {
+        this.loadingService.hide();
+      });
   }
 
   getById(courseId): Observable<CourseModel>  {
+    this.loadingService.show();
+
     return this.http.get(`${COURSES_PATH}/${courseId}`)
       .pipe(
-        map(course => new CourseModel({ ...course } as any))
+        map(course => {
+          this.loadingService.hide();
+          return new CourseModel({ ...course } as any);
+        })
       );
   }
 
   update(courseId, obj) {
+    this.loadingService.show();
+
     return this.getById(courseId).toPromise().then(
       course => {
         for (const prop in obj) {
@@ -76,11 +90,15 @@ export class CoursesService {
       error => {
         console.log(error);
       }
-    );
+    ).finally(() => {
+      this.loadingService.hide();
+    });
 
   }
 
   delete(courseId) {
+    this.loadingService.show();
+
     return this.http.delete(`${COURSES_PATH}/${courseId}`)
       .toPromise().then(
         () => {
@@ -89,7 +107,9 @@ export class CoursesService {
         error => {
           console.log(error);
         }
-      );
+      ).finally(() => {
+        this.loadingService.hide();
+      });
   }
 
   courseToDBRecord(course: CourseModel) {

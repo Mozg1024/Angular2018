@@ -10,24 +10,23 @@ import { Router } from '@angular/router';
 })
 export class HeaderComponent implements OnInit {
 
+  public userFirstName;
+  public userLastName;
+
   constructor(
     private authService: AuthorizationService,
     private router: Router
   ) { }
 
   ngOnInit() {
+    this.authService.userInfo().subscribe(userModel => {
+      this.userFirstName = (userModel && userModel.firstName) || '';
+      this.userLastName = (userModel && userModel.lastName) || '';
+    });
   }
 
   isAuthenticated() {
     return this.authService.isAuthenticated();
-  }
-
-  getUserInfo() {
-    const userInfo = this.authService.getUserInfo();
-
-    return (userInfo instanceof UserModel)
-      ? userInfo.firstName + ' ' + userInfo.lastName
-      : '';
   }
 
   login() {

@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { UserModel } from '../../core/user.model';
 import { Router } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
+import { Observable} from 'rxjs';
 
 const LOGIN_PATH = 'http://localhost:3004/auth/login';
 const USER_INFO_PATH = 'http://localhost:3004/auth/userinfo';
@@ -10,6 +11,7 @@ const USER_INFO_PATH = 'http://localhost:3004/auth/userinfo';
 export class AuthorizationService {
   private storage = new Map();
   private _token = '';
+  private userInfoObservers = [];
 
   public get token() {
     return this._token;
@@ -32,6 +34,7 @@ export class AuthorizationService {
           lastName: userInfo.lastName
         });
         this.storage.set(this.token, user);
+        this.onUserChanged(user);
         this.router.navigate(['/courses']);
         console.log(`User ${login} logged in successfully.`);
       }, (error) => {
@@ -44,6 +47,7 @@ export class AuthorizationService {
 
   public logout() {
     this.storage.delete(this.token);
+    this.onUserChanged(null);
     this.router.navigate(['/login']);
     console.log('User is logged out.');
   }
@@ -52,8 +56,16 @@ export class AuthorizationService {
     return this.storage.has(this.token);
   }
 
-  public getUserInfo(): UserModel {
-    return this.storage.get(this.token);
+  public userInfo(): Observable<any> {
+    return Observable.create((observer) => {
+      this.userInfoObservers.push(observer);
+    });
+  }
+
+  private onUserChanged(user: UserModel | null) {
+    this.userInfoObservers.forEach(observer => {
+      observer.next(user);
+    });
   }
 
 }

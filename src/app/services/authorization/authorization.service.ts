@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { UserModel } from '../../core/user.model';
 import { Router } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
-import { Observable} from 'rxjs';
+import { Observable, ReplaySubject } from 'rxjs';
 
 const LOGIN_PATH = 'http://localhost:3004/auth/login';
 const USER_INFO_PATH = 'http://localhost:3004/auth/userinfo';
@@ -11,7 +11,8 @@ const USER_INFO_PATH = 'http://localhost:3004/auth/userinfo';
 export class AuthorizationService {
   private storage = new Map();
   private _token = '';
-  private userInfoObservers = [];
+  private userInfoSubject = new ReplaySubject(1);
+  private isAuthenticatedSubject = new ReplaySubject(1);
 
   public get token() {
     return this._token;
@@ -52,20 +53,16 @@ export class AuthorizationService {
     console.log('User is logged out.');
   }
 
-  public isAuthenticated(): boolean {
-    return this.storage.has(this.token);
+  public isAuthenticated(): Observable<any> {
+    return this.isAuthenticatedSubject;
   }
 
   public userInfo(): Observable<any> {
-    return Observable.create((observer) => {
-      this.userInfoObservers.push(observer);
-    });
+    return this.userInfoSubject;
   }
 
   private onUserChanged(user: UserModel | null) {
-    this.userInfoObservers.forEach(observer => {
-      observer.next(user);
-    });
+    this.userInfoSubject.next(user);
+    this.isAuthenticatedSubject.next(!!user);
   }
-
 }

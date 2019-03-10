@@ -36,18 +36,17 @@ export class CoursePageComponent implements OnInit {
   ) { }
 
   save() {
-    this.course.title = this.title;
-    this.course.description = this.description.split('\n');
-    this.course.creationDate = new Date(this.date.year, this.date.month - 1, this.date.day);
-    this.course.duration = this.duration;
+    this.combineFieldsToModel();
 
     if (this.isNewCourse) {
-      this.courseService.add(this.course);
+      this.courseService
+        .add(this.course)
+        .finally(() => this.router.navigate(['/courses']));
     } else {
-      this.courseService.update(this.course.id, this.course);
+      this.courseService
+        .update(this.course.id, this.course)
+        .finally(() => this.router.navigate(['/courses']));
     }
-
-    this.router.navigate(['/courses']);
   }
 
   cancel() {
@@ -59,35 +58,52 @@ export class CoursePageComponent implements OnInit {
       const courseId = data['id'];
       if (courseId === 'new') {
         this.course = new CourseModel({});
+        this.fillTemplateFields();
         this.isNewCourse = true;
       } else {
-        this.course = this.courseService.getById(courseId);
+        this.courseService.getById(courseId).subscribe(
+          course => {
+            this.course = course;
+            this.fillTemplateFields();
+          },
+          error => {
+            console.log(error);
+            this.router.navigate(['../404']);
+          }
+        );
       }
 
-      if (!this.course) {
-        this.router.navigate(['../404']);
-      }
 
-      this.title = this.course.title;
-      this.description = this.course.description.join('\n');
-      this.date = {
-        year: this.course.creationDate.getFullYear(),
-        month: this.course.creationDate.getMonth() + 1,
-        day: this.course.creationDate.getDate(),
-      };
-      this.duration = this.course.duration;
-
-      this.breadCrumbs = [
-        {
-          link: '/courses',
-          title: 'Courses'
-        },
-        {
-          link: null,
-          title: this.course.title
-        }
-      ];
     });
+  }
+
+  fillTemplateFields() {
+    this.title = this.course.title;
+    this.description = this.course.description.join('\n');
+    this.date = {
+      year: this.course.creationDate.getFullYear(),
+      month: this.course.creationDate.getMonth() + 1,
+      day: this.course.creationDate.getDate(),
+    };
+    this.duration = this.course.duration;
+
+    this.breadCrumbs = [
+      {
+        link: '/courses',
+        title: 'Courses'
+      },
+      {
+        link: null,
+        title: this.course.title
+      }
+    ];
+  }
+
+  combineFieldsToModel() {
+    this.course.title = this.title;
+    this.course.description = this.description.split('\n');
+    this.course.creationDate = new Date(this.date.year, this.date.month - 1, this.date.day);
+    this.course.duration = this.duration;
   }
 
 }

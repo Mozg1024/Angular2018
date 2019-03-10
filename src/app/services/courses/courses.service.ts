@@ -1,46 +1,101 @@
 import { Injectable } from '@angular/core';
 import { CourseModel } from '../../courses/course.model';
-import { addDays } from 'date-fns';
+import { HttpClient } from '@angular/common/http';
+import * as _ from 'lodash';
+import { map } from 'rxjs/operators';
+import { Observable } from 'rxjs';
+
+const COURSES_PATH = 'http://localhost:3004/courses';
 
 @Injectable()
 export class CoursesService {
 
-  private _courseList = [];
-
-  constructor() {
-    for (let i = 1; i <= 10; i++) {
-      this._courseList.push(new CourseModel({
-        title: `Course ${i} title`,
-        creationDate: addDays(Date.now(), Math.floor(Math.random() * 40) - 20),
-        duration: Math.floor(Math.random() * 1000),
-        description: [`Course ${i} description`, `Course ${i} description`, `Course ${i} description`],
-        topRated: !!Math.round(Math.random())
-      }));
-    }
+  constructor(
+    private http: HttpClient
+  ) {
   }
 
-  getAll(): CourseModel[] {
-    return this._courseList;
+  getAll(start?: number, count?: number, textFragment?: string): Observable<{ courses: CourseModel[], totalCount: number }> {
+    start = start || 0;
+    count = count || 0;
+    textFragment = textFragment || '';
+    return this.http.get(`${COURSES_PATH}`, {
+      params: {
+        start: start.toString(),
+        count: count.toString(),
+        textFragment
+      }
+    }).pipe(
+      map(result => {
+        const { courses, totalCount } = result as any;
+        return {
+          courses: _.map(courses, course => new CourseModel({ ...course })),
+          totalCount
+        };
+      })
+    );
   }
 
   add(course: CourseModel) {
-    this._courseList.push(course);
+    return this.http.post(`${COURSES_PATH}`, this.courseToDBRecord(course))
+      .toPromise().then(
+        () => {
+          console.log('Course added.');
+        },
+        error => {
+          console.log(error);
+        }
+      );
   }
 
-  getById(courseId): CourseModel | undefined {
-    return this._courseList.find(course => course.id.equals(courseId));
+  getById(courseId): Observable<CourseModel>  {
+    return this.http.get(`${COURSES_PATH}/${courseId}`)
+      .pipe(
+        map(course => new CourseModel({ ...course } as any))
+      );
   }
 
   update(courseId, obj) {
-    const course = this.getById(courseId);
-    for (const prop in obj) {
-      if (course.hasOwnProperty(prop)) {
-        course[prop] = obj[prop];
+    return this.getById(courseId).toPromise().then(
+      course => {
+        for (const prop in obj) {
+          if (course.hasOwnProperty(prop)) {
+            course[prop] = obj[prop];
+          }
+        }
+        return this.http.put(`${COURSES_PATH}/${courseId}`, this.courseToDBRecord(course))
+          .toPromise().then(
+            () => {
+              console.log('Course updated.');
+            },
+            error => {
+              console.log(error);
+            }
+          );
+      },
+      error => {
+        console.log(error);
       }
-    }
+    );
+
   }
 
   delete(courseId) {
-    this._courseList = this._courseList.filter(course => !course.id.equals(courseId));
+    return this.http.delete(`${COURSES_PATH}/${courseId}`)
+      .toPromise().then(
+        () => {
+          console.log('Course deleted.');
+        },
+        error => {
+          console.log(error);
+        }
+      );
+  }
+
+  courseToDBRecord(course: CourseModel) {
+    return {
+      ...course,
+      id: course.id.toString()
+    };
   }
 }

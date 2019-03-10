@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import { AuthorizationService } from '../../services/authorization/authorization.service';
-import { UserModel } from '../user.model';
 
 @Component({
   selector: 'app-login-page',
@@ -9,9 +8,8 @@ import { UserModel } from '../user.model';
 })
 export class LoginPageComponent implements OnInit {
 
-  private token = 'user_token';
-  public userEmail = 'president@kremlin.ru';
-  public userPassword = '';
+  public userLogin = 'president@kremlin.ru';
+  public userPassword = 'qwerty123';
 
   constructor(private authService: AuthorizationService) { }
 
@@ -19,9 +17,7 @@ export class LoginPageComponent implements OnInit {
   }
 
   login() {
-    const user = new UserModel({ firstName: 'Alex', lastName: 'P' });
-    this.authService.login(user, this.token);
-    console.log(`${this.userEmail} logged in successfully.`);
+    this.authService.login(this.userLogin, this.userPassword);
   }
 
 }

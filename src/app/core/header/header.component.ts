@@ -10,8 +10,6 @@ import { Router } from '@angular/router';
 })
 export class HeaderComponent implements OnInit {
 
-  private token = 'user_token';
-
   constructor(
     private authService: AuthorizationService,
     private router: Router
@@ -21,11 +19,11 @@ export class HeaderComponent implements OnInit {
   }
 
   isAuthenticated() {
-    return this.authService.isAuthenticated(this.token);
+    return this.authService.isAuthenticated();
   }
 
   getUserInfo() {
-    const userInfo = this.authService.getUserInfo(this.token);
+    const userInfo = this.authService.getUserInfo();
 
     return (userInfo instanceof UserModel)
       ? userInfo.firstName + ' ' + userInfo.lastName
@@ -38,8 +36,7 @@ export class HeaderComponent implements OnInit {
   }
 
   logout() {
-    this.authService.logout(this.token);
-    console.log('User is logged out.');
+    this.authService.logout();
   }
 
 }

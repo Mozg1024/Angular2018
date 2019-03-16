@@ -1,5 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import { UserModel } from '../user.model';
 import { AuthorizationService } from '../../services/authorization/authorization.service';
 import { Router } from '@angular/router';
 
@@ -10,24 +9,21 @@ import { Router } from '@angular/router';
 })
 export class HeaderComponent implements OnInit {
 
+  public isAuthenticated = false;
+  public userFirstName;
+  public userLastName;
+
   constructor(
     private authService: AuthorizationService,
     private router: Router
   ) { }
 
   ngOnInit() {
-  }
-
-  isAuthenticated() {
-    return this.authService.isAuthenticated();
-  }
-
-  getUserInfo() {
-    const userInfo = this.authService.getUserInfo();
-
-    return (userInfo instanceof UserModel)
-      ? userInfo.firstName + ' ' + userInfo.lastName
-      : '';
+    this.authService.userInfo().subscribe(userModel => {
+      this.userFirstName = (userModel && userModel.firstName) || '';
+      this.userLastName = (userModel && userModel.lastName) || '';
+    });
+    this.authService.isAuthenticated().subscribe(value => this.isAuthenticated = value);
   }
 
   login() {

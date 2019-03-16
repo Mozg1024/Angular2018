@@ -9,12 +9,8 @@
           <input type="search"
                  class="form-control"
                  placeholder="Text to search"
+                 (keyup)="onSearchChanged()"
                  [(ngModel)]="textToSearch">
-        </div>
-        <div class="col-auto">
-          <button type="submit"
-                  class="btn btn-primary mb-2 search-button"
-                  (click)="search()">Find</button>
         </div>
       </div>
     </div>

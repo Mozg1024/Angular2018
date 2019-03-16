@@ -5,8 +5,10 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { Router } from '@angular/router';
 import { BreadCrumb } from '../breadcrumbs/breadcrumbs.component';
 import * as _ from 'lodash';
+import { Observable } from 'rxjs';
 
 const COURSES_PER_PAGE = 5;
+const DEBOUNCE_TIME = 1000;
 
 class Page {
   public index = 0;
@@ -31,19 +33,24 @@ export class CoursesPageComponent implements OnInit {
     title: 'Courses'
   }];
   @ViewChild('modalView') private modalView;
+  public onSearchChanged: () => void;
+
+  public search = Observable.create((observer) => {
+    this.onSearchChanged = _.debounce(() => {
+      if (this.textToSearch === '' || this.textToSearch.length > 3) {
+        observer.next(this.textToSearch);
+      }
+    }, DEBOUNCE_TIME);
+  });
 
   public get pages() {
     const pagesCount = Math.ceil(this.totalCount / COURSES_PER_PAGE);
     return _.times(pagesCount, index => new Page(index + 1));
   }
 
-  search() {
-    this.goTo(new Page(1));
-  }
-
-  goTo(page: Page) {
+  goTo(page: Page, filter?: string) {
     const start = COURSES_PER_PAGE * (page.index - 1);
-    this.courseService.getAll(start, COURSES_PER_PAGE, this.textToSearch).subscribe(result => {
+    this.courseService.getAll(start, COURSES_PER_PAGE, filter).subscribe(result => {
       const { courses, totalCount } = result;
       this.courses = courses;
       this.totalCount = totalCount;
@@ -76,6 +83,9 @@ export class CoursesPageComponent implements OnInit {
 
   ngOnInit() {
     this.goTo(new Page(1));
+    this.search.subscribe((filter) => {
+      this.goTo(new Page(1), filter);
+    });
   }
 
 }

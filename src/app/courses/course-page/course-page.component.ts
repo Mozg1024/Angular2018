@@ -1,9 +1,13 @@
 import { Component, OnInit } from '@angular/core';
 import { faCalendar } from '@fortawesome/free-solid-svg-icons';
 import { ActivatedRoute, Router } from '@angular/router';
+import { Store } from '@ngrx/store';
+
 import { CourseModel } from '../course.model';
 import { CoursesService } from '../../services/courses/courses.service';
 import { BreadCrumb } from '../breadcrumbs/breadcrumbs.component';
+import { CoursesListState } from '../../store/reducers/courses.reducer';
+import { AddCourse, UpdateCourse } from '../../store/actions/courses.actions';
 
 @Component({
   selector: 'app-course-page',
@@ -30,6 +34,7 @@ export class CoursePageComponent implements OnInit {
   isNewCourse = false;
 
   constructor(
+    private coursesStore: Store<CoursesListState>,
     private courseService: CoursesService,
     private router: Router,
     private route: ActivatedRoute
@@ -39,14 +44,12 @@ export class CoursePageComponent implements OnInit {
     this.combineFieldsToModel();
 
     if (this.isNewCourse) {
-      this.courseService
-        .add(this.course)
-        .finally(() => this.router.navigate(['/courses']));
+      this.coursesStore.dispatch(new AddCourse({ course: this.course }));
     } else {
-      this.courseService
-        .update(this.course.id, this.course)
-        .finally(() => this.router.navigate(['/courses']));
+      this.coursesStore.dispatch(new UpdateCourse({ courseId: this.course.id, obj: this.course }));
     }
+
+    this.router.navigate(['/courses']);
   }
 
   cancel() {
@@ -72,8 +75,6 @@ export class CoursePageComponent implements OnInit {
           }
         );
       }
-
-
     });
   }
 

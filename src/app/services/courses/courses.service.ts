@@ -1,9 +1,10 @@
-import { Injectable } from '@angular/core';
-import { CourseModel } from '../../courses/course.model';
-import { HttpClient } from '@angular/common/http';
 import * as _ from 'lodash';
-import { map } from 'rxjs/operators';
+import { Injectable } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
+
+import { CourseModel } from '../../courses/course.model';
 import { LoadingService } from '../loading/loading.service';
 
 const COURSES_PATH = 'http://localhost:3004/courses';
@@ -41,21 +42,10 @@ export class CoursesService {
   }
 
   add(course: CourseModel) {
-    this.loadingService.show();
-    return this.http.post(`${COURSES_PATH}`, this.courseToDBRecord(course))
-      .toPromise().then(
-        () => {
-          console.log('Course added.');
-        },
-        error => {
-          console.log(error);
-        }
-      ).finally(() => {
-        this.loadingService.hide();
-      });
+    return this.http.post(`${COURSES_PATH}`, this.courseToDBRecord(course));
   }
 
-  getById(courseId): Observable<CourseModel>  {
+  getById(courseId): Observable<CourseModel> {
     this.loadingService.show();
 
     return this.http.get(`${COURSES_PATH}/${courseId}`)
@@ -68,32 +58,18 @@ export class CoursesService {
   }
 
   update(courseId, obj) {
-    this.loadingService.show();
-
-    return this.getById(courseId).toPromise().then(
-      course => {
-        for (const prop in obj) {
-          if (course.hasOwnProperty(prop)) {
-            course[prop] = obj[prop];
-          }
-        }
-        return this.http.put(`${COURSES_PATH}/${courseId}`, this.courseToDBRecord(course))
-          .toPromise().then(
-            () => {
-              console.log('Course updated.');
-            },
-            error => {
-              console.log(error);
+    return this.getById(courseId)
+      .pipe(
+        map(course => {
+            for (const prop in obj) {
+              if (course.hasOwnProperty(prop)) {
+                course[prop] = obj[prop];
+              }
             }
-          );
-      },
-      error => {
-        console.log(error);
-      }
-    ).finally(() => {
-      this.loadingService.hide();
-    });
-
+            return this.http.put(`${COURSES_PATH}/${courseId}`, this.courseToDBRecord(course));
+          }
+        )
+      );
   }
 
   delete(courseId) {

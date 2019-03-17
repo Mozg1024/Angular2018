@@ -97,19 +97,7 @@ export class CoursesService {
   }
 
   delete(courseId) {
-    this.loadingService.show();
-
-    return this.http.delete(`${COURSES_PATH}/${courseId}`)
-      .toPromise().then(
-        () => {
-          console.log('Course deleted.');
-        },
-        error => {
-          console.log(error);
-        }
-      ).finally(() => {
-        this.loadingService.hide();
-      });
+    return this.http.delete(`${COURSES_PATH}/${courseId}`);
   }
 
   courseToDBRecord(course: CourseModel) {

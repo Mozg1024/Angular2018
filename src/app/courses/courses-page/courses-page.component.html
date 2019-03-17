@@ -22,13 +22,13 @@
     </div>
   </div>
   <app-course-plate
-    *ngFor="let course of courses | orderByDate"
+    *ngFor="let course of courses$ | async | orderByDate"
     [course]="course"
     (delete)="onCourseDelete($event)">
   </app-course-plate>
 
   <div class="card mb-2"
-       *ngIf="courses.length === 0">
+       *ngIf="(courses$ | async)?.length === 0">
     <div class="card-body">
       NO DATA. FEEL FREE TO ADD NEW COURSE.
     </div>
@@ -38,8 +38,8 @@
     <nav>
       <ul class="pagination">
         <li class="page-item"
-            *ngFor="let page of pages"
-            [ngClass]="{ 'active': page.index === currentPageIndex}">
+            *ngFor="let page of pages$ | async"
+            [ngClass]="{ 'active': page.index === (currentPageIndex$ | async)}">
           <span class="page-link"
                 (click)="goTo(page)">
             {{page.index}}

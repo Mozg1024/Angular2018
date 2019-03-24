@@ -1,5 +1,6 @@
 import * as _ from 'lodash';
 import { Component, OnInit, ViewChild } from '@angular/core';
+import { FormControl } from '@angular/forms';
 import { Router } from '@angular/router';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { Store } from '@ngrx/store';
@@ -31,7 +32,7 @@ const DEBOUNCE_TIME = 1000;
 })
 export class CoursesPageComponent implements OnInit {
 
-  public textToSearch = '';
+  public textToSearch = new FormControl();
   public courses$: Observable<CourseModel[]>;
   public pages$: Observable<Page[]>;
   public currentPageIndex$: Observable<number>;
@@ -70,8 +71,8 @@ export class CoursesPageComponent implements OnInit {
     this.currentPageIndex$ = this.coursesStore.select(getCurrentPageIndex);
 
     this.onSearchChanged = _.debounce(() => {
-      if (this.textToSearch === '' || this.textToSearch.length >= 3) {
-        this.coursesStore.dispatch(new SetFilter({ filter: this.textToSearch }));
+      if (this.textToSearch.value === '' || this.textToSearch.value.length >= 3) {
+        this.coursesStore.dispatch(new SetFilter({ filter: this.textToSearch.value }));
       }
     }, DEBOUNCE_TIME);
   }

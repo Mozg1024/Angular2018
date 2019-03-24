@@ -8,6 +8,7 @@ import { CoursesService } from '../../services/courses/courses.service';
 import { BreadCrumb } from '../breadcrumbs/breadcrumbs.component';
 import { CoursesListState } from '../../store/reducers/courses.reducer';
 import { AddCourse, UpdateCourse } from '../../store/actions/courses.actions';
+import {FormControl} from '@angular/forms';
 
 @Component({
   selector: 'app-course-page',
@@ -18,15 +19,11 @@ export class CoursePageComponent implements OnInit {
 
   faCalendar = faCalendar;
   course: CourseModel;
-  duration = 0;
-  title = '';
-  description = '';
-  date = {
-    year: 2018,
-    month: 1,
-    day: 1
-  };
-  authors = '';
+  duration = new FormControl();
+  title = new FormControl();
+  description = new FormControl();
+  date = new FormControl();
+  authors = new FormControl();
   breadCrumbs: BreadCrumb[] = [{
     link: null,
     title: 'Courses'
@@ -79,14 +76,14 @@ export class CoursePageComponent implements OnInit {
   }
 
   fillTemplateFields() {
-    this.title = this.course.title;
-    this.description = this.course.description.join('\n');
-    this.date = {
+    this.title.setValue(this.course.title);
+    this.description.setValue(this.course.description.join('\n'));
+    this.date.setValue({
       year: this.course.creationDate.getFullYear(),
       month: this.course.creationDate.getMonth() + 1,
       day: this.course.creationDate.getDate(),
-    };
-    this.duration = this.course.duration;
+    });
+    this.duration.setValue(this.course.duration);
 
     this.breadCrumbs = [
       {
@@ -101,10 +98,10 @@ export class CoursePageComponent implements OnInit {
   }
 
   combineFieldsToModel() {
-    this.course.title = this.title;
-    this.course.description = this.description.split('\n');
-    this.course.creationDate = new Date(this.date.year, this.date.month - 1, this.date.day);
-    this.course.duration = this.duration;
+    this.course.title = this.title.value;
+    this.course.description = this.description.value.split('\n');
+    this.course.creationDate = new Date(this.date.value.year, this.date.value.month - 1, this.date.value.day);
+    this.course.duration = this.duration.value;
   }
 
 }

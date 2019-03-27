@@ -12,6 +12,7 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { FilterPipe } from '../pipes/filter/filter.pipe';
 import { CoursePageComponent } from './course-page/course-page.component';
 import { RouterModule } from '@angular/router';
+import { DurationComponent } from './duration/duration.component';
 
 @NgModule({
   declarations: [
@@ -22,7 +23,8 @@ import { RouterModule } from '@angular/router';
     FormatDurationPipe,
     OrderByDatePipe,
     CoursePageComponent,
-    CoursePlateComponent
+    CoursePlateComponent,
+    DurationComponent
   ],
   imports: [
     CommonModule,

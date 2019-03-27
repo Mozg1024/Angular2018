@@ -1,0 +1,18 @@
+<div class="form-group">
+  <label for="duration">Duration</label>
+  <div class="row">
+    <div class="col-4">
+      <input type="text"
+             min="0"
+             class="form-control"
+             id="duration"
+             (blur)="onTouched()"
+             (input)="onChanged($event)"
+             [value]="duration"/>
+    </div>
+    <div class="col-3 mt-2"
+         *ngIf="duration >= 0">
+      {{duration | formatDuration}}
+    </div>
+  </div>
+</div>

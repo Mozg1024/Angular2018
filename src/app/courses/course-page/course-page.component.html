@@ -5,24 +5,24 @@
   <div class="d-flex justify-content-center">
     <div class="card col-12">
       <div class="card-header row">
-        {{title.value}}
+        {{courseForm.controls.title.value}}
       </div>
       <div class="card-body">
-        <div>
+        <form [formGroup]="courseForm">
 
           <div class="form-group">
             <label for="title">Title</label>
             <input type="text"
                    class="form-control"
                    id="title"
-                   [formControl]="title">
+                   formControlName="title">
           </div>
 
           <div class="form-group">
             <label for="description">Description</label>
             <textarea class="form-control"
                       id="description"
-                      [formControl]="description">
+                      formControlName="description">
             </textarea>
           </div>
 
@@ -32,8 +32,8 @@
               <div class="input-group row">
                 <input class="form-control"
                        id="date"
-                       placeholder="yyyy-mm-dd"
-                       [formControl]="date"
+                       placeholder="dd/mm/yyyy"
+                       formControlName="date"
                        ngbDatepicker #datepicker="ngbDatepicker">
                 <div class="input-group-append">
                   <button class="btn btn-outline-secondary" (click)="datepicker.toggle()" type="button">
@@ -52,11 +52,11 @@
                        min="0"
                        class="form-control"
                        id="duration"
-                       [formControl]="duration"/>
+                       formControlName="duration"/>
               </div>
               <div class="col-3 mt-2"
-                   *ngIf="duration.value > 0">
-                {{duration | formatDuration}}
+                   *ngIf="courseForm.controls.duration.value > 0">
+                {{courseForm.controls.duration.value | formatDuration}}
               </div>
             </div>
           </div>
@@ -66,7 +66,7 @@
             <input type="text"
                    class="form-control"
                    id="authors"
-                   [formControl]="authors">
+                   formControlName="authors">
           </div>
 
 
@@ -76,7 +76,7 @@
           <button class="btn secondary float-right"
                   (click)="cancel()">Cancel</button>
 
-        </div>
+        </form>
       </div>
     </div>
   </div>

@@ -13,6 +13,8 @@ import { FilterPipe } from '../pipes/filter/filter.pipe';
 import { CoursePageComponent } from './course-page/course-page.component';
 import { RouterModule } from '@angular/router';
 import { DurationComponent } from './duration/duration.component';
+import { AuthorsComponent } from './authors/authors.component';
+import { NgMultiSelectDropDownModule } from 'ng-multiselect-dropdown';
 
 @NgModule({
   declarations: [
@@ -24,11 +26,13 @@ import { DurationComponent } from './duration/duration.component';
     OrderByDatePipe,
     CoursePageComponent,
     CoursePlateComponent,
+    AuthorsComponent,
     DurationComponent
   ],
   imports: [
     CommonModule,
     FontAwesomeModule,
+    NgMultiSelectDropDownModule.forRoot(),
     NgbModule,
     RouterModule,
     FormsModule,

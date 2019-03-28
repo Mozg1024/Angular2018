@@ -46,16 +46,13 @@
 
           <app-duration formControlName="duration"></app-duration>
 
-          <div class="form-group">
-            <label for="authors">Authors</label>
-            <input type="text"
-                   class="form-control"
-                   id="authors"
-                   formControlName="authors">
-          </div>
+          <app-authors [authorsList]="authorsList$ | async"
+                       formControlName="authors"></app-authors>
 
           <button class="btn btn-primary"
-                  (click)="save()">Save</button>
+                  (click)="save()"
+                  [disabled]="courseForm.invalid"
+          >Save</button>
 
           <button class="btn secondary float-right"
                   (click)="cancel()">Cancel</button>

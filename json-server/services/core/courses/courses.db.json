@@ -10,7 +10,17 @@
         "Course 1 description",
         "Course 1 description"
       ],
-      "topRated": false
+      "topRated": false,
+      "authors": [
+        {
+          "id": "5b7a846290d6ff6894377fb5",
+          "name": "Decker Albert"
+        },
+        {
+          "id": "5b7a84624010db4d640e0099",
+          "name": "Vincent Doyle"
+        }
+      ]
     },
     {
       "id": "a369b3b2-fe6d-e27d-4346-02dac0f5362c",

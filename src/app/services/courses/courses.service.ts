@@ -5,9 +5,11 @@ import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 
 import { CourseModel } from '../../courses/course.model';
+import { Author } from '../../courses/author.model';
 import { LoadingService } from '../loading/loading.service';
 
 const COURSES_PATH = 'http://localhost:3004/courses';
+const AUTHORS_PATH = 'http://localhost:3004/authors';
 
 @Injectable()
 export class CoursesService {
@@ -16,6 +18,17 @@ export class CoursesService {
     private http: HttpClient,
     private loadingService: LoadingService
   ) {
+  }
+
+  getAuthors(): Observable<Author[]> {
+    this.loadingService.show();
+    return this.http.get(`${AUTHORS_PATH}`)
+      .pipe(
+        map(authors => {
+          this.loadingService.hide();
+          return _.map(authors, author => new Author({ ...author }));
+        })
+      );
   }
 
   getAll(start?: number, count?: number, textFragment?: string): Observable<{ courses: CourseModel[], totalCount: number }> {

@@ -16,15 +16,16 @@ import * as _ from 'lodash';
 })
 export class DurationComponent implements ControlValueAccessor {
 
-  onChange = (duration: number) => {};
-  onTouched = () => {};
-  duration = 0;
+  public duration = 0;
 
   constructor() { }
 
+  onChange = (duration: number) => {};
+  onTouched = () => {};
+
   writeValue(duration: number): void {
     this.duration = duration;
-    this.onChange(this.duration)
+    this.onChange(this.duration);
   }
 
   registerOnChange(fn: (duration: number) => void): void {
@@ -43,5 +44,4 @@ export class DurationComponent implements ControlValueAccessor {
       event.target.value = this.duration;
     }
   }
-
 }

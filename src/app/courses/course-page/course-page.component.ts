@@ -8,7 +8,9 @@ import { CoursesService } from '../../services/courses/courses.service';
 import { BreadCrumb } from '../breadcrumbs/breadcrumbs.component';
 import { CoursesListState } from '../../store/reducers/courses.reducer';
 import { AddCourse, UpdateCourse } from '../../store/actions/courses.actions';
-import {FormControl, FormGroup, Validators} from '@angular/forms';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { Author } from '../author.model';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-course-page',
@@ -46,12 +48,16 @@ export class CoursePageComponent implements OnInit {
   }];
   isNewCourse = false;
 
+  authorsList$: Observable<Author[]>;
+
   constructor(
     private coursesStore: Store<CoursesListState>,
     private courseService: CoursesService,
     private router: Router,
     private route: ActivatedRoute
-  ) { }
+  ) {
+    this.authorsList$ = this.courseService.getAuthors();
+  }
 
   save() {
     this.combineFieldsToModel();
@@ -101,7 +107,7 @@ export class CoursePageComponent implements OnInit {
         day: this.course.creationDate.getDate(),
       },
       duration: this.course.duration,
-      authors: ''
+      authors: this.course.authors
     });
 
     this.breadCrumbs = [
@@ -125,6 +131,7 @@ export class CoursePageComponent implements OnInit {
       this.courseForm.controls.date.value.day
     );
     this.course.duration = this.courseForm.controls.duration.value;
+    this.course.authors = this.courseForm.controls.authors.value;
   }
 
 }

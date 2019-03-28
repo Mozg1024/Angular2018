@@ -5,10 +5,10 @@
 
   <ul class="nav justify-content-end">
     <li class="nav-item">
-      <p class="nav-link">{{userFirstName}} {{userLastName}}</p>
+      <p class="nav-link">{{(userInfo$ | async)?.firstName}} {{(userInfo$ | async)?.lastName}}</p>
     </li>
     <li class="nav-item"
-        [ngSwitch]="isAuthenticated">
+        [ngSwitch]="isAuthenticated$ | async">
       <button class="nav-link btn btn-light"
               *ngSwitchCase="true"
               (click)="logout()">Logout</button>

@@ -1,5 +1,5 @@
 import { NgModule } from '@angular/core';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { CoursesPageComponent } from './courses-page/courses-page.component';
 import { BreadcrumbsComponent } from './breadcrumbs/breadcrumbs.component';
@@ -12,6 +12,9 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { FilterPipe } from '../pipes/filter/filter.pipe';
 import { CoursePageComponent } from './course-page/course-page.component';
 import { RouterModule } from '@angular/router';
+import { DurationComponent } from './duration/duration.component';
+import { AuthorsComponent } from './authors/authors.component';
+import { NgMultiSelectDropDownModule } from 'ng-multiselect-dropdown';
 
 @NgModule({
   declarations: [
@@ -22,14 +25,18 @@ import { RouterModule } from '@angular/router';
     FormatDurationPipe,
     OrderByDatePipe,
     CoursePageComponent,
-    CoursePlateComponent
+    CoursePlateComponent,
+    AuthorsComponent,
+    DurationComponent
   ],
   imports: [
     CommonModule,
     FontAwesomeModule,
+    NgMultiSelectDropDownModule.forRoot(),
     NgbModule,
     RouterModule,
-    FormsModule
+    FormsModule,
+    ReactiveFormsModule
   ],
   providers: [],
   exports: [

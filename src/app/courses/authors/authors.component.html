@@ -1,0 +1,11 @@
+<div class="form-group">
+  <label for="authors">Authors</label>
+  <ng-multiselect-dropdown id="authors"
+                           required
+                           [ngClass]="{ 'dropdown-open': dropDownOpen }"
+                           [placeholder]="'Select Authors'"
+                           [data]="authorsList"
+                           [(ngModel)]="authors"
+                           [settings]="dropdownSettings">
+  </ng-multiselect-dropdown>
+</div>

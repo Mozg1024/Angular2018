@@ -1,6 +1,7 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
+import { NgbDateParserFormatter } from '@ng-bootstrap/ng-bootstrap';
 import { StoreModule } from '@ngrx/store';
 import { EffectsModule } from '@ngrx/effects';
 
@@ -15,6 +16,7 @@ import { AuthorizationInterceptor } from './services/authorization/authorization
 import { authReducer } from './store/reducers/auth.reducer';
 import { coursesReducer } from './store/reducers/courses.reducer';
 import { CoursesEffects } from './store/effects/courses.effects';
+import { NgbDateCustomParserFormatter } from './formatters/date-custom-parser-formatter';
 
 // Application wide providers
 const APP_PROVIDERS = [
@@ -22,6 +24,10 @@ const APP_PROVIDERS = [
     provide: HTTP_INTERCEPTORS,
     useClass: AuthorizationInterceptor,
     multi: true
+  },
+  {
+    provide: NgbDateParserFormatter,
+    useClass: NgbDateCustomParserFormatter
   },
   AuthorizationService,
   AuthorizationGuard,

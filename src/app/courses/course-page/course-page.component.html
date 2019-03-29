@@ -5,24 +5,24 @@
   <div class="d-flex justify-content-center">
     <div class="card col-12">
       <div class="card-header row">
-        {{title}}
+        {{courseForm.controls.title.value}}
       </div>
       <div class="card-body">
-        <div>
+        <form [formGroup]="courseForm">
 
           <div class="form-group">
             <label for="title">Title</label>
             <input type="text"
                    class="form-control"
                    id="title"
-                   [(ngModel)]="title">
+                   formControlName="title">
           </div>
 
           <div class="form-group">
             <label for="description">Description</label>
             <textarea class="form-control"
                       id="description"
-                      [(ngModel)]="description">
+                      formControlName="description">
             </textarea>
           </div>
 
@@ -32,8 +32,8 @@
               <div class="input-group row">
                 <input class="form-control"
                        id="date"
-                       placeholder="yyyy-mm-dd"
-                       [(ngModel)]="date"
+                       placeholder="dd/mm/yyyy"
+                       formControlName="date"
                        ngbDatepicker #datepicker="ngbDatepicker">
                 <div class="input-group-append">
                   <button class="btn btn-outline-secondary" (click)="datepicker.toggle()" type="button">
@@ -44,39 +44,20 @@
             </div>
           </div>
 
-          <div class="form-group">
-            <label for="duration">Duration</label>
-            <div class="row">
-              <div class="col-4">
-                <input type="number"
-                       min="0"
-                       class="form-control"
-                       id="duration"
-                       [(ngModel)]="duration"/>
-              </div>
-              <div class="col-3 mt-2"
-                   *ngIf="duration > 0">
-                {{duration | formatDuration}}
-              </div>
-            </div>
-          </div>
+          <app-duration formControlName="duration"></app-duration>
 
-          <div class="form-group">
-            <label for="authors">Authors</label>
-            <input type="text"
-                   class="form-control"
-                   id="authors"
-                   [(ngModel)]="authors">
-          </div>
-
+          <app-authors [authorsList]="authorsList$ | async"
+                       formControlName="authors"></app-authors>
 
           <button class="btn btn-primary"
-                  (click)="save()">Save</button>
+                  (click)="save()"
+                  [disabled]="courseForm.invalid"
+          >Save</button>
 
           <button class="btn secondary float-right"
                   (click)="cancel()">Cancel</button>
 
-        </div>
+        </form>
       </div>
     </div>
   </div>

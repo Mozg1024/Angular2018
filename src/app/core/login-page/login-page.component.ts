@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { AuthorizationService } from '../../services/authorization/authorization.service';
+import { FormControl } from '@angular/forms';
 
 @Component({
   selector: 'app-login-page',
@@ -8,16 +9,19 @@ import { AuthorizationService } from '../../services/authorization/authorization
 })
 export class LoginPageComponent implements OnInit {
 
-  public userLogin = 'president@kremlin.ru';
-  public userPassword = 'qwerty123';
+  public userLogin = new FormControl();
+  public userPassword = new FormControl();
 
-  constructor(private authService: AuthorizationService) { }
+  constructor(private authService: AuthorizationService) {
+    this.userLogin.setValue('president@kremlin.ru');
+    this.userPassword.setValue('qwerty123');
+  }
 
   ngOnInit() {
   }
 
   login() {
-    this.authService.login(this.userLogin, this.userPassword);
+    this.authService.login(this.userLogin.value, this.userPassword.value);
   }
 
 }

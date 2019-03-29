@@ -8,6 +8,9 @@ import { CoursesService } from '../../services/courses/courses.service';
 import { BreadCrumb } from '../breadcrumbs/breadcrumbs.component';
 import { CoursesListState } from '../../store/reducers/courses.reducer';
 import { AddCourse, UpdateCourse } from '../../store/actions/courses.actions';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { Author } from '../author.model';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-course-page',
@@ -18,27 +21,43 @@ export class CoursePageComponent implements OnInit {
 
   faCalendar = faCalendar;
   course: CourseModel;
-  duration = 0;
-  title = '';
-  description = '';
-  date = {
-    year: 2018,
-    month: 1,
-    day: 1
-  };
-  authors = '';
+  courseForm = new FormGroup({
+    duration: new FormControl(0, [
+      Validators.required,
+      Validators.pattern(/^\d*$/)
+    ]),
+    title: new FormControl('', [
+      Validators.required,
+      Validators.maxLength(50)
+    ]),
+    description: new FormControl('', [
+      Validators.required,
+      Validators.maxLength(500)
+    ]),
+    date: new FormControl('', [
+      Validators.required
+    ]),
+    authors: new FormControl('', [
+      Validators.required
+    ])
+  });
+
   breadCrumbs: BreadCrumb[] = [{
     link: null,
     title: 'Courses'
   }];
   isNewCourse = false;
 
+  authorsList$: Observable<Author[]>;
+
   constructor(
     private coursesStore: Store<CoursesListState>,
     private courseService: CoursesService,
     private router: Router,
     private route: ActivatedRoute
-  ) { }
+  ) {
+    this.authorsList$ = this.courseService.getAuthors();
+  }
 
   save() {
     this.combineFieldsToModel();
@@ -79,14 +98,17 @@ export class CoursePageComponent implements OnInit {
   }
 
   fillTemplateFields() {
-    this.title = this.course.title;
-    this.description = this.course.description.join('\n');
-    this.date = {
-      year: this.course.creationDate.getFullYear(),
-      month: this.course.creationDate.getMonth() + 1,
-      day: this.course.creationDate.getDate(),
-    };
-    this.duration = this.course.duration;
+    this.courseForm.setValue({
+      title: this.course.title,
+      description: this.course.description.join('\n'),
+      date: {
+        year: this.course.creationDate.getFullYear(),
+        month: this.course.creationDate.getMonth() + 1,
+        day: this.course.creationDate.getDate(),
+      },
+      duration: this.course.duration,
+      authors: this.course.authors
+    });
 
     this.breadCrumbs = [
       {
@@ -101,10 +123,15 @@ export class CoursePageComponent implements OnInit {
   }
 
   combineFieldsToModel() {
-    this.course.title = this.title;
-    this.course.description = this.description.split('\n');
-    this.course.creationDate = new Date(this.date.year, this.date.month - 1, this.date.day);
-    this.course.duration = this.duration;
+    this.course.title = this.courseForm.controls.title.value;
+    this.course.description = this.courseForm.controls.description.value.split('\n');
+    this.course.creationDate = new Date(
+      this.courseForm.controls.date.value.year,
+      this.courseForm.controls.date.value.month - 1,
+      this.courseForm.controls.date.value.day
+    );
+    this.course.duration = this.courseForm.controls.duration.value;
+    this.course.authors = this.courseForm.controls.authors.value;
   }
 
 }
